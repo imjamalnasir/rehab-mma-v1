@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MMA & Sports Rehab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Open Sans', sans-serif; color: #2d2d2d; background: #fff; overflow-x: hidden; }
+    h1,h2,h3,h4,h5 { font-family: 'Montserrat', sans-serif; }
+
+    /* TOP BAR */
+    .top-bar { background: #f2f4f6; border-bottom: 1px solid #e4e7ea; height: 38px; display: flex; align-items: center; padding: 0 5vw; position: fixed; top: 0; left: 0; right: 0; z-index: 101; justify-content: flex-end; }
+    .top-bar-msg { font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600; color: #3a3a3a; letter-spacing: 0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .top-bar-msg span { color: #EE7D0C; font-weight: 700; }
+    .top-bar-links { display: flex; align-items: center; gap: 1.25rem; }
+    .top-bar-link { display: flex; align-items: center; gap: 5px; font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 700; color: #444; text-decoration: none; transition: color 0.2s; letter-spacing: 0.3px; white-space: nowrap; }
+    .top-bar-link:hover { color: #4794A8; }
+    .top-bar-link svg { flex-shrink: 0; }
+    .top-bar-sep { color: #ccc; font-size: 0.65rem; }
+
+    /* NAV */
+    .nav { position: fixed; top: 38px; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; height: 70px; }
+    .nav-logo img { height: 38px; width: auto; object-fit: contain; display: block; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: #2d2d2d; font-size: 0.88rem; font-weight: 500; font-family: 'Montserrat', sans-serif; letter-spacing: 0.3px; transition: color 0.2s; }
+    .nav-links a:hover { color: #4794A8; }
+    .nav-cta { background: #EE7D0C; color: #fff; border: none; border-radius: 6px; padding: 10px 22px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s, transform 0.15s; letter-spacing: 0.3px; }
+    .nav-cta:hover { background: #d96e08; transform: translateY(-1px); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: #2d2d2d; border-radius: 2px; transition: 0.3s; }
+
+    /* HERO */
+    .hero { position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: linear-gradient(120deg, #0a1628 0%, #12304a 50%, #1a4a5a 100%); }
+    .hero-bg-pattern { position: absolute; inset: 0; opacity: 0.04; background-image: repeating-linear-gradient(0deg, #fff 0px, #fff 1px, transparent 1px, transparent 60px), repeating-linear-gradient(90deg, #fff 0px, #fff 1px, transparent 1px, transparent 60px); }
+    .hero-img-side { position: absolute; right: 0; top: 0; bottom: 0; width: 52%; background: linear-gradient(to right, #12304a 0%, transparent 30%), url('uploads/hero-banner 3.png') center/cover no-repeat; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 3rem 2.5rem 3rem 4rem; z-index: 1; }
+    .hero-img-side::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, #12304a 20%, rgba(18,48,74,0.25) 100%); pointer-events: none; }
+    .hero-trust-overlay { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
+    .trust-card { background: rgba(10,30,60,0.55); backdrop-filter: blur(12px); border: 1px solid rgba(71,148,168,0.3); border-radius: 12px; padding: 1.25rem 1.75rem; display: flex; align-items: center; gap: 16px; width: 240px; justify-content: flex-start; }
+    .hero-content { position: relative; z-index: 2; padding: 0 5vw 0 100px; padding-top: 108px; max-width: 680px; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(71,148,168,0.2); border: 1px solid rgba(71,148,168,0.4); color: #7dc4d8; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 1.5rem; }
+    .hero-tag::before { content: ''; display: block; width: 6px; height: 6px; background: #4794A8; border-radius: 50%; }
+    .hero h1 { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 1.25rem; letter-spacing: -1px; }
+    .hero h1 em { color: #EE7D0C; font-style: normal; }
+    .hero-sub { font-size: clamp(1rem, 1.5vw, 1.15rem); color: rgba(255,255,255,0.75); line-height: 1.7; margin-bottom: 2.5rem; max-width: 480px; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3.5rem; }
+    .btn-primary { background: #EE7D0C; color: #fff; border: none; border-radius: 8px; padding: 16px 32px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(238,125,12,0.4); letter-spacing: 0.3px; }
+    .btn-primary:hover { background: #d96e08; transform: translateY(-2px); box-shadow: 0 6px 28px rgba(238,125,12,0.5); }
+    .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.4); border-radius: 8px; padding: 14px 28px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: border-color 0.2s, background 0.2s, transform 0.15s; }
+    .btn-secondary:hover { border-color: #fff; background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+    .hero-trust { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: 10px; }
+    .trust-icon { width: 52px; height: 52px; background: rgba(71,148,168,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .trust-text { font-size: 0.82rem; color: rgba(255,255,255,0.7); font-family: 'Montserrat', sans-serif; }
+    .trust-text strong { display: block; color: #fff; font-size: 0.95rem; font-weight: 700; }
+    .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; }
+    .hero-scroll span { font-size: 0.72rem; color: rgba(255,255,255,0.4); font-family: 'Montserrat', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent); animation: scrollPulse 1.8s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100% { opacity: 0.4; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); } }
+
+    /* FADE IN */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+    .fade-in-delay-4 { transition-delay: 0.4s; }
+
+    /* SECTION SHARED */
+    .section { padding: 100px 5vw; }
+    .section-label { font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #EE7D0C; margin-bottom: 0.75rem; }
+    .section-title { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; color: #4794A8; margin-bottom: 1rem; letter-spacing: -0.5px; }
+    .section-title.dark { color: #1a1a1a; }
+    .section-sub { font-size: 1rem; color: #555; line-height: 1.7; max-width: 560px; }
+
+    /* ABOUT */
+    .about { background: #f7fafc; }
+    .about-header { text-align: center; max-width: 680px; margin: 0 auto 3.5rem; }
+    .about-header .section-title { margin-bottom: 1rem; }
+    .about-header p { font-size: 0.98rem; color: #666; line-height: 1.85; }
+    .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .about-video-col { display: flex; flex-direction: column; gap: 1.25rem; }
+    .about-video-wrap { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 16px 48px rgba(0,0,0,0.13); cursor: pointer; }
+    .about-thumb { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+    .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 72px; height: 72px; background: rgba(238,125,12,0.92); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.2s; box-shadow: 0 6px 28px rgba(238,125,12,0.5); }
+    .about-video-wrap:hover .play-btn { background: #EE7D0C; transform: translate(-50%,-50%) scale(1.1); }
+    .play-btn svg { margin-left: 4px; }
+    .about-video-title { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.88rem; color: #444; line-height: 1.5; }
+    .about-iframe-wrap { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 16px; overflow: hidden; box-shadow: 0 16px 48px rgba(0,0,0,0.13); }
+    .about-iframe-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .awards-col { display: flex; flex-direction: column; gap: 1.25rem; }
+    .awards-col-label { font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #aaa; }
+    .awards-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+    .award-tile { background: #fff; border-radius: 12px; border: 1.5px solid #eaeff3; padding: 0.75rem; display: flex; align-items: center; justify-content: center; aspect-ratio: 1; box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: transform 0.25s, box-shadow 0.25s; overflow: hidden; }
+    .award-tile:hover { transform: scale(1.06); box-shadow: 0 8px 28px rgba(71,148,168,0.15); }
+    .award-tile img { width: 100%; height: 100%; object-fit: contain; }
+    .about-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 3rem; }
+    .btn-outline-teal { background: transparent; color: #4794A8; border: 2px solid #4794A8; border-radius: 8px; padding: 14px 26px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.15s; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; }
+    .btn-outline-teal:hover { background: #4794A8; color: #fff; transform: translateY(-2px); }
+
+    /* CONDITIONS */
+    .conditions { background: #f4f6f8; }
+    .conditions-top { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; margin-bottom: 3.5rem; }
+    .conditions-desc { font-size: 0.95rem; color: #555; line-height: 1.8; }
+    .conditions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    .condition-card { background: #fff; border: 1.5px solid #e8edf0; border-radius: 14px; padding: 2rem 1.5rem; text-align: center; cursor: pointer; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; display: flex; flex-direction: column; align-items: center; gap: 1rem; position: relative; overflow: hidden; }
+    .condition-card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.1; transition: opacity 0.25s; }
+    .condition-card:hover .condition-card-bg { opacity: 0.18; }
+    .condition-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(71,148,168,0.15); border-color: #4794A8; }
+    .condition-card:hover .card-icon { background: #4794A8; }
+    .condition-card:hover .card-icon svg { stroke: #fff; }
+    .card-icon { width: 58px; height: 58px; background: #edf6f9; border-radius: 14px; display: flex; align-items: center; justify-content: center; transition: background 0.25s; flex-shrink: 0; }
+    .card-icon svg { transition: stroke 0.25s; }
+    .card-title { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.9rem; color: #1a1a1a; }
+    .view-all-btn { display: flex; align-items: center; gap: 8px; background: none; border: 1.5px solid #4794A8; color: #4794A8; border-radius: 8px; padding: 14px 28px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.15s; margin-top: 2.5rem; }
+    .view-all-btn:hover { background: #4794A8; color: #fff; transform: translateY(-2px); }
+    .view-all-wrap { text-align: center; }
+
+    /* TESTIMONIALS */
+    .testimonials { background: linear-gradient(135deg, #f0f7fa 0%, #fafbfc 100%); }
+    .testimonials-top { text-align: center; margin-bottom: 3.5rem; }
+    .testimonials-top .section-sub { margin: 0 auto; }
+    .slider-wrap { position: relative; overflow: hidden; }
+    .slider-track { display: flex; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
+    .testimonial-card { flex: 0 0 calc(33.333% - 1rem); margin: 0 0.5rem; background: #fff; border-radius: 16px; padding: 2.25rem; box-shadow: 0 4px 24px rgba(0,0,0,0.07); display: flex; flex-direction: column; gap: 1rem; }
+    .quote-mark { font-size: 3.5rem; line-height: 1; color: #EE7D0C; font-family: Georgia, serif; opacity: 0.5; margin-bottom: -0.5rem; }
+    .stars { display: flex; gap: 3px; }
+    .star { color: #EE7D0C; font-size: 0.9rem; }
+    .test-title { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; color: #1a1a1a; line-height: 1.4; }
+    .test-text { font-size: 0.9rem; color: #666; line-height: 1.7; flex: 1; }
+    .test-author { display: flex; align-items: center; gap: 12px; padding-top: 1rem; border-top: 1px solid #f0f0f0; }
+    .author-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #4794A8, #2d7a8e); display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+    .author-name { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.85rem; color: #1a1a1a; }
+    .author-label { font-size: 0.75rem; color: #999; }
+    .slider-controls { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 2.5rem; }
+    .slider-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #4794A8; background: transparent; color: #4794A8; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s, color 0.2s; font-size: 1.1rem; }
+    .slider-btn:hover { background: #4794A8; color: #fff; }
+    .slider-dots { display: flex; gap: 8px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; cursor: pointer; transition: background 0.2s, transform 0.2s; border: none; padding: 0; }
+    .dot.active { background: #4794A8; transform: scale(1.3); }
+    .test-cta { text-align: center; margin-top: 3.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .btn-teal { background: #4794A8; color: #fff; border: none; border-radius: 8px; padding: 16px 32px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(71,148,168,0.35); }
+    .btn-teal:hover { background: #3d829a; transform: translateY(-2px); }
+    .btn-outline-dark { background: transparent; color: #2d2d2d; border: 2px solid #d0d0d0; border-radius: 8px; padding: 14px 28px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: border-color 0.2s, transform 0.15s; }
+    .btn-outline-dark:hover { border-color: #2d2d2d; transform: translateY(-2px); }
+
+    /* TREATMENTS */
+    .treatments { background: #fff; }
+    .treatments-inner { display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; align-items: start; }
+    .treatments-left { position: sticky; top: 100px; }
+    .treatments-desc { font-size: 0.93rem; color: #666; line-height: 1.8; margin-bottom: 2rem; }
+    .treatments-btns { display: flex; flex-direction: column; gap: 0.75rem; }
+    .treatment-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .treatment-card { border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; position: relative; }
+    .treatment-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,0.14); }
+    .treatment-card:first-child { grid-column: 1 / -1; }
+    .treatment-img { height: 220px; background: #c0d8df; position: relative; overflow: hidden; }
+    .treatment-card:first-child .treatment-img { height: 280px; }
+    .treatment-img-inner { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.5s; }
+    .treatment-card:hover .treatment-img-inner { transform: scale(1.05); }
+    .treatment-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,22,40,0.88) 0%, rgba(10,22,40,0.35) 100%); }
+    .treatment-body { padding: 1.5rem; background: #fff; }
+    .treatment-card:first-child .treatment-body { position: absolute; bottom: 0; left: 0; right: 0; background: transparent; padding: 1.5rem 2rem; }
+    .treatment-card:first-child .treatment-title { color: #fff; font-size: 1.3rem; }
+    .treatment-card:first-child .treatment-desc { color: rgba(255,255,255,0.85); }
+    .treatment-card:first-child .treatment-link { color: #EE7D0C; }
+    .treatment-num { font-family: 'Montserrat', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px; color: #EE7D0C; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .treatment-title { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; color: #1a1a1a; margin-bottom: 0.5rem; }
+    .treatment-desc { font-size: 0.85rem; color: #777; line-height: 1.6; margin-bottom: 1rem; }
+    .treatment-link { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem; color: #4794A8; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; text-decoration: none; transition: gap 0.2s; }
+    .treatment-link:hover { gap: 10px; }
+
+    /* LOCATIONS */
+    .locations-section { background: #0d1e2e; padding: 5rem 5vw; }
+    .locations-inner { display: grid; grid-template-columns: 1fr 1.1fr 1.1fr; gap: 3rem; align-items: start; }
+    .loc-brand { display: flex; flex-direction: column; gap: 1.5rem; }
+    .loc-logo { height: 64px; width: auto; object-fit: contain; object-position: left; }
+    .loc-brand-desc { font-size: 0.85rem; color: rgba(255,255,255,0.45); line-height: 1.7; }
+    .loc-socials { display: flex; gap: 0.65rem; flex-wrap: wrap; }
+    .loc-social-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s, border-color 0.2s, transform 0.2s; text-decoration: none; }
+    .loc-social-btn:hover { background: #4794A8; border-color: #4794A8; transform: translateY(-3px); }
+    .loc-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 2rem; display: flex; flex-direction: column; gap: 1.25rem; transition: border-color 0.25s, background 0.25s; }
+    .loc-card:hover { background: rgba(71,148,168,0.07); border-color: rgba(71,148,168,0.35); }
+    .loc-card-name { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.05rem; color: #fff; display: flex; align-items: center; gap: 10px; }
+    .loc-tag { background: #EE7D0C; color: #fff; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+    .loc-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+    .loc-info-row { display: flex; align-items: flex-start; gap: 10px; }
+    .loc-info-icon { width: 32px; height: 32px; background: rgba(71,148,168,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .loc-info-text { font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.6; }
+    .loc-info-text strong { display: block; color: rgba(255,255,255,0.9); font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.3px; margin-bottom: 2px; text-transform: uppercase; }
+    .loc-dir-btn { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 1.5px solid rgba(71,148,168,0.5); color: #4794A8; border-radius: 8px; padding: 10px 18px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; text-decoration: none; width: fit-content; }
+    .loc-dir-btn:hover { background: #4794A8; color: #fff; border-color: #4794A8; }
+    @media (max-width: 900px) { .locations-inner { grid-template-columns: 1fr; gap: 2rem; } .loc-logo { height: 52px; } }
+
+    /* FOOTER */
+    .footer { background: #0d1e2e; color: rgba(255,255,255,0.55); border-top: 1px solid rgba(255,255,255,0.07); }
+    .footer-top { padding: 4rem 5vw 3rem; display: grid; grid-template-columns: 1.4fr repeat(5, 1fr); gap: 2.5rem; }
+    .footer-brand { display: flex; flex-direction: column; gap: 1rem; padding-right: 1rem; }
+    .footer-logo { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.1rem; color: #fff; letter-spacing: -0.3px; }
+    .footer-logo span { color: #EE7D0C; }
+    .footer-tagline { font-size: 0.83rem; line-height: 1.7; color: rgba(255,255,255,0.5); }
+    .footer-contact-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: rgba(255,255,255,0.6); }
+    .footer-contact-item svg { flex-shrink: 0; opacity: 0.6; }
+    .footer-col-heading { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.8px; text-transform: uppercase; color: #fff; margin-bottom: 1.25rem; cursor: default; display: flex; align-items: center; justify-content: space-between; }
+    .footer-col-heading .chevron { display: none; transition: transform 0.3s; }
+    .footer-col-heading.open .chevron { transform: rotate(180deg); }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .footer-links li a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; font-family: 'Open Sans', sans-serif; transition: color 0.22s; position: relative; }
+    .footer-links li a:hover { color: #4794A8; }
+    .footer-links li a.highlight { color: rgba(71,148,168,0.85); font-weight: 600; }
+    .footer-links li a.highlight:hover { color: #4794A8; }
+    .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 0 5vw; }
+    .footer-social-bar { padding: 1.5rem 5vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-socials { display: flex; gap: 0.75rem; }
+    .social-btn { width: 38px; height: 38px; border-radius: 8px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s, border-color 0.2s, transform 0.15s; }
+    .social-btn:hover { background: #4794A8; border-color: #4794A8; transform: translateY(-2px); }
+    .back-to-top { display: flex; align-items: center; gap: 6px; background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: rgba(255,255,255,0.5); font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; padding: 8px 14px; cursor: pointer; transition: color 0.2s, border-color 0.2s, transform 0.15s; }
+    .back-to-top:hover { color: #fff; border-color: rgba(255,255,255,0.4); transform: translateY(-2px); }
+    .footer-copy-bar { padding: 1.25rem 5vw; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
+    .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.3); text-align: center; }
+    @media (max-width: 1100px) {
+      .footer-top { grid-template-columns: 1fr 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; gap: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 2rem; }
+    }
+    @media (max-width: 640px) {
+      .footer-top { grid-template-columns: 1fr; gap: 0; padding: 2rem 5vw 1rem; }
+      .footer-brand { flex-direction: column; }
+      .footer-col { border-bottom: 1px solid rgba(255,255,255,0.07); padding: 0.85rem 0; }
+      .footer-col-heading { margin-bottom: 0; cursor: pointer; }
+      .footer-col-heading .chevron { display: block; }
+      .footer-links { overflow: hidden; max-height: 0; transition: max-height 0.35s ease, margin-top 0.35s; margin-top: 0; }
+      .footer-links.open { max-height: 300px; margin-top: 0.85rem; }
+    }
+
+    /* TWEAKS */
+    .tweaks-panel { position: fixed; bottom: 24px; right: 24px; background: #fff; border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.18); padding: 1.5rem; width: 280px; z-index: 9999; display: none; border: 1px solid rgba(0,0,0,0.08); }
+    .tweaks-panel.open { display: block; }
+    .tweaks-title { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.9rem; color: #1a1a1a; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+    .tweak-row { margin-bottom: 1rem; }
+    .tweak-label { font-size: 0.75rem; font-family: 'Montserrat', sans-serif; font-weight: 600; color: #666; margin-bottom: 6px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+    .tweak-colors { display: flex; gap: 8px; }
+    .color-swatch { width: 28px; height: 28px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s, transform 0.15s; }
+    .color-swatch.active, .color-swatch:hover { border-color: #1a1a1a; transform: scale(1.1); }
+    .tweak-toggle { display: flex; gap: 8px; }
+    .toggle-btn { flex: 1; padding: 7px; border-radius: 6px; border: 1.5px solid #e0e0e0; background: #fff; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+    .toggle-btn.active { background: #4794A8; color: #fff; border-color: #4794A8; }
+
+    /* MOBILE NAV */
+    .mobile-menu { display: none; position: fixed; inset: 108px 0 0 0; background: #fff; z-index: 99; flex-direction: column; padding: 2rem 5vw; gap: 0; overflow-y: auto; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { padding: 1.1rem 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; color: #1a1a1a; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1rem; }
+
+    /* PLACEHOLDER IMG */
+    .img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: repeating-linear-gradient(45deg, #d0e8ee, #d0e8ee 10px, #c4dfe6 10px, #c4dfe6 20px); }
+    .img-placeholder span { font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.35); padding: 6px 12px; border-radius: 4px; text-align: center; }
+
+    @media (max-width: 1024px) {
+      .conditions-grid { grid-template-columns: repeat(3, 1fr); }
+      .treatments-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .treatments-left { position: static; }
+      .conditions-top { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+    @media (max-width: 768px) {
+      .hero-img-side { display: none; }
+      .conditions-grid { grid-template-columns: repeat(2, 1fr); }
+      .treatment-cards { grid-template-columns: 1fr; }
+      .treatment-card:first-child { grid-column: 1; }
+      .testimonial-card { flex: 0 0 calc(100% - 1rem); }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .about-inner { grid-template-columns: 1fr; }
+      .awards-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .section { padding: 70px 5vw; }
+      .conditions-grid { grid-template-columns: 1fr 1fr; }
+      .hero-btns { flex-direction: column; }
+      .hero-trust { flex-direction: column; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentOrange": "#EE7D0C",
+  "accentTeal": "#4794A8",
+  "heroLayout": "split",
+  "roundness": "medium"
+}/*EDITMODE-END*/;
+
+// SVG Icons
+const Icons = {
+  Back: () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 12a9 9 0 0 1 9-9"/><path d="M21 12a9 9 0 0 1-9 9"/><path d="M9 3l3-3 3 3"/><path d="M9 17H5a2 2 0 0 0-2 2v2"/>
+    </svg>
+  ),
+  Neck: () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="5" r="3"/><path d="M12 8v5"/><path d="M9 21v-4a3 3 0 0 1 6 0v4"/>
+    </svg>
+  ),
+  Shoulder: () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 9a6 6 0 1 1 12 0"/><path d="M6 9H4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/>
+    </svg>
+  ),
+  Head: () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 22V12H6a3 3 0 0 1-3-3V8a9 9 0 1 1 18 0v1a3 3 0 0 1-3 3h-3v10"/>
+      <path d="M10 22h4"/>
+    </svg>
+  ),
+  Knee: () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8 3v5l-2 3 2 3v7"/><path d="M16 3v5l2 3-2 3v7"/><path d="M6 11h12"/>
+    </svg>
+  ),
+  Arthritis: () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2a5 5 0 0 1 5 5c0 2-1 3-2 4l1 3H8l1-3c-1-1-2-2-2-4a5 5 0 0 1 5-5z"/><path d="M8 14v6"/><path d="M16 14v6"/><path d="M8 20h8"/>
+    </svg>
+  ),
+  Recovery: () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22V12"/><path d="m17 7-5-5-5 5"/><path d="M5 12H2l3 5 3-5H6"/><path d="M19 12h3l-3 5-3-5h3"/>
+    </svg>
+  ),
+  Arrow: ({ dir = 'right' }) => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      {dir === 'right' ? <><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></> : <><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,5 5,12 12,19"/></>}
+    </svg>
+  ),
+  Shield: () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+  ),
+  Award: () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="8" r="6"/><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/>
+    </svg>
+  ),
+  Clock: () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
+    </svg>
+  ),
+};
+
+// Intersection observer hook
+function useInView(threshold = 0.15) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, visible];
+}
+
+// TOP BAR
+function TopBar() {
+  return (
+    <div className="top-bar">
+      <div className="top-bar-links" style={{ marginLeft: 'auto' }}>
+        <p className="top-bar-msg">
+          You do not need a <span>referral</span> to see a Physical Therapist
+        </p>
+        <span className="top-bar-sep">|</span>
+        <a href="https://rehabmma.com/about/" target="_blank" rel="noopener noreferrer" className="top-bar-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Learn More
+        </a>
+        <span className="top-bar-sep">|</span>
+        <a href="https://www.google.com/search?q=MMA+Sports+Rehab+Arlington+VA" target="_blank" rel="noopener noreferrer" className="top-bar-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26 12,2"/></svg>
+          Review Us
+        </a>
+        <span className="top-bar-sep">|</span>
+        <a href="tel:+17032147445" className="top-bar-link" style={{ color: '#4794A8' }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.1 11.91 19.79 19.79 0 0 1 1.03 3.27 2 2 0 0 1 3 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call Us
+        </a>
+      </div>
+    </div>
+  );
+}
+
+// NAV
+function Nav({ mobileOpen, setMobileOpen, onAppt }) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', h);
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  return (
+    <>
+      <TopBar/>
+      <nav className="nav" style={{ boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.08)' : 'none' }}>
+        <div className="nav-logo">
+          <img src="https://rehabmma.com/wp-content/uploads/2023/08/cropped-footer-logo.png.webp" alt="MMA & Sports Rehab"/>
+        </div>
+        <ul className="nav-links">
+          {['About','What We Treat','Post-Surgical Rehab','How We Treat','Patient Info','Health Tips','Contact Us'].map(l => (
+            <li key={l}><a href="#">{l}</a></li>
+          ))}
+        </ul>
+        <button className="nav-cta" onClick={onAppt}>Request Appointment</button>
+        <div className="nav-hamburger" onClick={() => setMobileOpen(o => !o)}>
+          <span style={{ transform: mobileOpen ? 'rotate(45deg) translate(5px,5px)' : 'none' }}/>
+          <span style={{ opacity: mobileOpen ? 0 : 1 }}/>
+          <span style={{ transform: mobileOpen ? 'rotate(-45deg) translate(5px,-5px)' : 'none' }}/>
+        </div>
+      </nav>
+      <div className={`mobile-menu ${mobileOpen ? 'open' : ''}`}>
+        {['About','What We Treat','Post-Surgical Rehab','How We Treat','Patient Info','Health Tips','Contact Us'].map(l => (
+          <a key={l} href="#" onClick={() => setMobileOpen(false)}>{l}</a>
+        ))}
+        <button className="btn-primary" style={{ marginTop: '1.5rem', width: '100%' }} onClick={onAppt}>Request Appointment</button>
+      </div>
+    </>
+  );
+}
+
+// HERO
+function Hero({ onAppt, tweaks }) {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => { setTimeout(() => setLoaded(true), 100); }, []);
+  return (
+    <section className="hero" id="home">
+      <div className="hero-bg"/>
+      <div className="hero-bg-pattern"/>
+      <div className="hero-content">
+        <div className={`hero-tag fade-in ${loaded ? 'visible' : ''}`} style={{ transitionDelay: '0.1s' }}>
+          Trusted by Athletes &amp; Active Adults
+        </div>
+        <h1 className={`fade-in ${loaded ? 'visible' : ''}`} style={{ transitionDelay: '0.25s' }}>
+          We Treat the<br/><em>Source of Pain</em>
+        </h1>
+        <p className={`hero-sub fade-in ${loaded ? 'visible' : ''}`} style={{ transitionDelay: '0.4s' }}>
+          Personalized rehabilitation programs built around your body, your goals, and your long-term recovery — so you can get back to what you love.
+        </p>
+        <div className={`hero-btns fade-in ${loaded ? 'visible' : ''}`} style={{ transitionDelay: '0.55s' }}>
+          <button className="btn-primary" onClick={onAppt} style={{ background: tweaks.accentOrange }}>Request Appointment</button>
+          <button className="btn-secondary">Learn More</button>
+        </div>
+      </div>
+      {/* RIGHT IMAGE COL — trust cards overlaid bottom-right */}
+      <div className="hero-img-side">
+        <div className={`hero-trust-overlay fade-in ${loaded ? 'visible' : ''}`} style={{ transitionDelay: '0.7s' }}>
+          {[
+            { icon: <Icons.Shield/>, num: '500+', label: 'Athletes Treated' },
+            { icon: <Icons.Award/>, num: '15+', label: 'Years Experience' },
+            { icon: <Icons.Clock/>, num: '98%', label: 'Patient Satisfaction' },
+          ].map(({ icon, num, label }) => (
+            <div className="trust-card" key={label}>
+              <div className="trust-icon">{icon}</div>
+              <div style={{ textAlign: 'left' }}>
+                <div style={{ fontFamily: 'Montserrat', fontWeight: 600, fontSize: '1.75rem', color: '#fff', lineHeight: 1.1, letterSpacing: '-0.5px' }}>{num}</div>
+                <div style={{ fontFamily: 'Montserrat', fontSize: '0.82rem', color: 'rgba(255,255,255,0.72)', marginTop: 4 }}>{label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="hero-scroll">
+        <span>Scroll</span>
+        <div className="scroll-line"/>
+      </div>
+    </section>
+  );
+}
+
+// ABOUT
+const awardImgs = [
+  'https://rehabmma.com/wp-content/uploads/2024/03/award-2024.jpg',
+  'https://rehabmma.com/wp-content/uploads/2023/08/Image-3.png',
+  'https://rehabmma.com/wp-content/uploads/2023/08/award2.png',
+  'https://rehabmma.com/wp-content/uploads/2023/08/4040.png',
+  'https://rehabmma.com/wp-content/uploads/2024/01/award-2024.jpg',
+  'https://rehabmma.com/wp-content/uploads/2023/08/award-1.png',
+  'https://rehabmma.com/wp-content/uploads/2023/08/award-2.png',
+  'https://rehabmma.com/wp-content/uploads/2023/08/Group-31.png',
+  'https://rehabmma.com/wp-content/uploads/2024/04/image004.png',
+  'https://rehabmma.com/wp-content/uploads/2024/12/2025-top-vote-getter-icon.jpg',
+];
+
+function About({ onAppt }) {
+  const [ref, visible] = useInView();
+  const [playing, setPlaying] = useState(false);
+  return (
+    <section className="section about" id="about" ref={ref}>
+      {/* HEADER */}
+      <div className={`about-header fade-in ${visible ? 'visible' : ''}`}>
+        <div className="section-label">About Us</div>
+        <h2 className="section-title">Exceptional Care</h2>
+        <p>Since 2014, MMA &amp; Sports Rehab has served the thriving Northern Virginia community, committed to providing premium Physical Therapy services and a patient experience that exceeds all expectations.</p>
+      </div>
+
+      {/* TWO COLUMNS */}
+      <div className="about-inner">
+        {/* LEFT: VIDEO */}
+        <div className={`about-video-col fade-in ${visible ? 'visible' : ''}`} style={{ transitionDelay: '0.15s' }}>
+          {!playing ? (
+            <div className="about-video-wrap" onClick={() => setPlaying(true)} role="button" aria-label="Play video about MMA & Sports Rehab">
+              <img className="about-thumb" src="https://img.youtube.com/vi/SWK6uaXC55E/0.jpg" alt="MMA & Sports Rehab Physical Therapy Arlington VA"/>
+              <div className="play-btn">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><polygon points="5,3 19,12 5,21"/></svg>
+              </div>
+            </div>
+          ) : (
+            <div className="about-iframe-wrap">
+              <iframe src="https://www.youtube.com/embed/SWK6uaXC55E?autoplay=1" title="MMA & Sports Rehab Physical Therapy Arlington VA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen/>
+            </div>
+          )}
+          <p className="about-video-title">MMA &amp; Sports Rehab Helps Give Lasting Pain Relief with Physical Therapy in Arlington, VA</p>
+        </div>
+
+        {/* RIGHT: AWARDS GRID */}
+        <div className={`awards-col fade-in ${visible ? 'visible' : ''}`} style={{ transitionDelay: '0.3s' }}>
+          <div className="awards-col-label">Awards &amp; Recognition</div>
+          <div className="awards-grid">
+            {awardImgs.map((src, i) => (
+              <div className="award-tile" key={i}>
+                <img src={src} alt={`Award ${i + 1}`} loading="lazy"/>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* CTAs */}
+      <div className={`about-btns fade-in ${visible ? 'visible' : ''}`} style={{ transitionDelay: '0.45s' }}>
+        <a href="https://listings.betterhealthcare.co/c/mma--sports-rehab/" target="_blank" rel="noopener noreferrer">
+          <button className="btn-primary" style={{ boxShadow: '0 4px 20px rgba(238,125,12,0.35)' }}>Request Appointment</button>
+        </a>
+        <a href="https://rehabmma.com/about/" target="_blank" rel="noopener noreferrer" className="btn-outline-teal">
+          Learn more about our mission
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+        </a>
+      </div>
+    </section>
+  );
+}
+
+// CONDITIONS
+const conditionImgs = [
+  'https://rehabmma.com/wp-content/uploads/2023/08/hand-pain-relief-MMA-Sports-Rehab-Arlington-VA-1.jpg',
+  'https://rehabmma.com/wp-content/uploads/2023/08/elbow-wrist-hand-pain-1103-1280x500-1.jpg.webp',
+  'https://rehabmma.com/wp-content/uploads/2023/09/back-pain-sciatica-1103-1280x500-1.webp',
+  'https://rehabmma.com/wp-content/uploads/2025/02/MMA-Sports-Rehab-Arlington-VA-2.jpg',
+  'https://rehabmma.com/wp-content/uploads/2023/08/hand-pain-relief-MMA-Sports-Rehab-Arlington-VA-1.jpg',
+  'https://rehabmma.com/wp-content/uploads/2023/08/elbow-wrist-hand-pain-1103-1280x500-1.jpg.webp',
+  'https://rehabmma.com/wp-content/uploads/2023/09/back-pain-sciatica-1103-1280x500-1.webp',
+];
+
+const conditions = [
+  { icon: <Icons.Back/>, title: 'Back Pain Relief' },
+  { icon: <Icons.Neck/>, title: 'Neck Pain Relief' },
+  { icon: <Icons.Shoulder/>, title: 'Shoulder Pain Relief' },
+  { icon: <Icons.Head/>, title: 'Headache Relief' },
+  { icon: <Icons.Knee/>, title: 'Knee Pain Relief' },
+  { icon: <Icons.Arthritis/>, title: 'Arthritis Relief' },
+  { icon: <Icons.Recovery/>, title: 'Post-op Rehab' },
+];
+
+function Conditions({ tweaks }) {
+  const [ref, visible] = useInView();
+  return (
+    <section className="section conditions" id="conditions" ref={ref}>
+      <div className={`conditions-top fade-in ${visible ? 'visible' : ''}`}>
+        <div>
+          <div className="section-label">What We Do</div>
+          <h2 className="section-title">Precise Pain Diagnosis</h2>
+          <p className="section-sub" style={{ fontFamily: 'Montserrat', fontWeight: 700, color: '#1a1a1a', fontSize: '1.05rem' }}>
+            MMA &amp; Sports Rehab Uncovers The Root Of Your Pain
+          </p>
+        </div>
+        <p className="conditions-desc">
+          Rather than simply focusing on the painful area, our therapists assess the body as a whole to identify the true source of dysfunction and how surrounding joints and tissues contribute to the issue.
+        </p>
+      </div>
+      <div className="conditions-grid">
+        {conditions.map((c, i) => (
+          <div key={c.title} className={`condition-card fade-in ${visible ? 'visible' : ''}`} style={{ transitionDelay: `${i * 0.07}s` }} role="button" aria-label={c.title} tabIndex={0}>
+            <div className="condition-card-bg" style={{ backgroundImage: `url(${conditionImgs[i]})` }}/>
+            <div className="card-icon" style={{ position: 'relative', zIndex: 1 }}>{c.icon}</div>
+            <div className="card-title" style={{ position: 'relative', zIndex: 1 }}>{c.title}</div>
+          </div>
+        ))}
+        <div className={`condition-card fade-in ${visible ? 'visible' : ''}`} style={{ transitionDelay: `${7 * 0.07}s`, background: tweaks.accentTeal, borderColor: tweaks.accentTeal, color: '#fff' }} role="button" tabIndex={0}>
+          <div className="card-icon" style={{ background: 'rgba(255,255,255,0.2)' }}>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
+            </svg>
+          </div>
+          <div className="card-title" style={{ color: '#fff' }}>View All Conditions</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// TESTIMONIALS
+const testimonials = [
+  { title: '"MSR really works with you to get back into fighting shape!"', text: 'Dr. Ujjwal was great. So patient and knowledgeable... His staff is always so friendly and professional.', author: 'Lauren F-D.', initials: 'LF' },
+  { title: '"This is the best place I\'ve ever gone for PT — I 100% recommend it."', text: 'I have become injured multiple times throughout my athletic career. I am so glad that I found MMA & Sports Rehab.', author: 'Ca V.', initials: 'CV' },
+  { title: '"Dr. Ujjwal and Katie gave me my life back."', text: "I couldn't stand or walk for more than twenty minutes without significant pain. The team worked tirelessly on my recovery.", author: 'Dorothy W.', initials: 'DW' },
+  { title: '"Look no further, you\'ve found your home for recovery."', text: 'I severely broke my ankle and required surgery. The care I received here was exceptional every step of the way.', author: 'Davis W.', initials: 'DW' },
+  { title: '"Now I am feeling EXTREMELY better in my day to day life."', text: 'I have had back pain for over a decade. After just a few months here, I have my life back. Cannot recommend enough.', author: 'Ashley G.', initials: 'AG' },
+];
+
+function Testimonials({ onAppt }) {
+  const [ref, visible] = useInView();
+  const [idx, setIdx] = useState(0);
+  const perPage = typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 3;
+  const maxIdx = testimonials.length - perPage;
+  const prev = () => setIdx(i => Math.max(0, i - 1));
+  const next = () => setIdx(i => Math.min(maxIdx, i + 1));
+  return (
+    <section className="section testimonials" id="testimonials" ref={ref}>
+      <div className={`testimonials-top fade-in ${visible ? 'visible' : ''}`}>
+        <div className="section-label">Patient Stories</div>
+        <h2 className="section-title">Get Results</h2>
+        <p className="section-sub">Check Out What Our Patients Have To Say About Their Experience</p>
+      </div>
+      <div className={`slider-wrap fade-in ${visible ? 'visible' : ''}`} style={{ transitionDelay: '0.2s' }}>
+        <div className="slider-track" style={{ transform: `translateX(calc(-${idx * (100/3)}% - ${idx * (1/3)}rem))` }}>
+          {testimonials.map((t, i) => (
+            <article key={i} className="testimonial-card">
+              <div className="stars">{'★★★★★'.split('').map((s,j) => <span key={j} className="star">{s}</span>)}</div>
+              <div className="quote-mark">"</div>
+              <p className="test-title">{t.title}</p>
+              <p className="test-text">{t.text}</p>
+              <div className="test-author">
+                <div className="author-avatar">{t.initials}</div>
+                <div>
+                  <div className="author-name">{t.author}</div>
+                  <div className="author-label">Verified Patient</div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+      <div className="slider-controls">
+        <button className="slider-btn" onClick={prev} aria-label="Previous" disabled={idx === 0} style={{ opacity: idx === 0 ? 0.4 : 1 }}>
+          <Icons.Arrow dir="left"/>
+        </button>
+        <div className="slider-dots">
+          {Array.from({ length: maxIdx + 1 }).map((_, i) => (
+            <button key={i} className={`dot ${i === idx ? 'active' : ''}`} onClick={() => setIdx(i)} aria-label={`Go to ${i+1}`}/>
+          ))}
+        </div>
+        <button className="slider-btn" onClick={next} aria-label="Next" disabled={idx >= maxIdx} style={{ opacity: idx >= maxIdx ? 0.4 : 1 }}>
+          <Icons.Arrow dir="right"/>
+        </button>
+      </div>
+      <div className="test-cta">
+        <button className="btn-primary" onClick={onAppt}>Request Appointment</button>
+        <button className="btn-outline-dark">View All Testimonials</button>
+      </div>
+    </section>
+  );
+}
+
+// TREATMENTS
+const treatments = [
+  {
+    num: '01', title: 'Manual Therapy',
+    desc: 'Hands-on techniques to improve mobility and reduce pain',
+    bg: 'url(https://rehabmma.com/wp-content/uploads/2023/08/hand-pain-relief-MMA-Sports-Rehab-Arlington-VA-1.jpg) center/cover no-repeat',
+    featured: true,
+  },
+  {
+    num: '02', title: 'Return To Sport',
+    desc: 'Performance-based rehab program to safely return to athletic activity',
+    bg: 'url(https://rehabmma.com/wp-content/uploads/2023/08/elbow-wrist-hand-pain-1103-1280x500-1.jpg.webp) center/cover no-repeat',
+  },
+  {
+    num: '03', title: 'Blood Flow Restriction',
+    desc: 'Technique that enhances muscle recovery using controlled blood flow',
+    bg: 'url(https://rehabmma.com/wp-content/uploads/2023/09/back-pain-sciatica-1103-1280x500-1.webp) center/cover no-repeat',
+  },
+  {
+    num: '04', title: 'Dry Needling',
+    desc: 'Targeted treatment to relieve pain and muscle tightness',
+    bg: 'url(https://rehabmma.com/wp-content/uploads/2025/02/MMA-Sports-Rehab-Arlington-VA-2.jpg) center/cover no-repeat',
+  },
+];
+
+function Treatments({ onAppt, tweaks }) {
+  const [ref, visible] = useInView();
+  return (
+    <section className="section treatments" id="treatments" ref={ref}>
+      <div className="treatments-inner">
+        <div className={`treatments-left fade-in ${visible ? 'visible' : ''}`}>
+          <div className="section-label">Our Services</div>
+          <h2 className="section-title">We Offer More</h2>
+          <p className="section-sub" style={{ fontFamily: 'Montserrat', fontWeight: 700, color: '#1a1a1a', fontSize: '1rem', marginBottom: '1rem' }}>
+            Get The Tools You Need To Recover At MMA &amp; Sports Rehab
+          </p>
+          <p className="treatments-desc">
+            We take a unique approach to sports rehab and physical therapy by evaluating the whole body, identifying the root cause, and creating personalized treatment plans. Our evaluations include movement analysis, joint and ligament testing, neurologic assessments, and functional performance testing.
+          </p>
+          <div className="treatments-btns">
+            <button className="btn-primary" onClick={onAppt} style={{ background: tweaks.accentOrange, width: 'fit-content' }}>Request Appointment</button>
+            <button className="view-all-btn" style={{ width: 'fit-content', borderColor: tweaks.accentTeal, color: tweaks.accentTeal }}>
+              View All Treatments <Icons.Arrow/>
+            </button>
+          </div>
+        </div>
+        <div className="treatment-cards">
+          {treatments.map((t, i) => (
+            <div key={t.title} className={`treatment-card fade-in ${visible ? 'visible' : ''}`} style={{ transitionDelay: `${i * 0.1}s` }} role="article" tabIndex={0}>
+              <div className="treatment-img" style={{}}>
+                <div className="treatment-img-inner" style={{ background: t.bg }}/>
+                <div className="treatment-img-overlay"/>
+              </div>
+              {t.featured ? (
+                <div className="treatment-body">
+                  <div className="treatment-num">{t.num}</div>
+                  <div className="treatment-title">{t.title}</div>
+                  <div className="treatment-desc">{t.desc}</div>
+                  <span className="treatment-link">Read More <Icons.Arrow/></span>
+                </div>
+              ) : (
+                <div className="treatment-body" style={{ background: '#fff' }}>
+                  <div className="treatment-num">{t.num}</div>
+                  <div className="treatment-title">{t.title}</div>
+                  <div className="treatment-desc">{t.desc}</div>
+                  <span className="treatment-link" style={{ color: tweaks.accentTeal }}>Read More <Icons.Arrow/></span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// MODAL
+function ApptModal({ open, onClose }) {
+  if (!open) return null;
+  return (
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 9000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={onClose}>
+      <div style={{ background: '#fff', borderRadius: 20, padding: '2.5rem', maxWidth: 480, width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.25)' }} onClick={e => e.stopPropagation()}>
+        <h3 style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '1.5rem', color: '#4794A8', marginBottom: '0.5rem' }}>Request Appointment</h3>
+        <p style={{ color: '#888', fontSize: '0.88rem', marginBottom: '1.75rem' }}>Fill out the form below and our team will be in touch within 24 hours.</p>
+        {['Full Name', 'Email Address', 'Phone Number'].map(f => (
+          <input key={f} placeholder={f} style={{ display: 'block', width: '100%', padding: '13px 16px', border: '1.5px solid #e0e0e0', borderRadius: 8, marginBottom: '0.85rem', fontFamily: 'Open Sans', fontSize: '0.9rem', outline: 'none' }}/>
+        ))}
+        <select style={{ display: 'block', width: '100%', padding: '13px 16px', border: '1.5px solid #e0e0e0', borderRadius: 8, marginBottom: '1.25rem', fontFamily: 'Open Sans', fontSize: '0.9rem', color: '#888', outline: 'none' }}>
+          <option value="">Select Condition / Service</option>
+          <option>Back Pain</option><option>Neck Pain</option><option>Shoulder Pain</option>
+          <option>Knee Pain</option><option>Post-op Rehab</option><option>Other</option>
+        </select>
+        <button className="btn-primary" style={{ width: '100%', padding: '16px', fontSize: '1rem' }}>Submit Request</button>
+        <button onClick={onClose} style={{ width: '100%', padding: '12px', marginTop: '0.5rem', background: 'none', border: 'none', color: '#999', fontFamily: 'Open Sans', cursor: 'pointer', fontSize: '0.85rem' }}>Cancel</button>
+      </div>
+    </div>
+  );
+}
+
+// TWEAKS
+function TweaksPanel({ tweaks, setTweaks, open }) {
+  const oranges = ['#EE7D0C', '#e06b00', '#f59e00', '#d4501e'];
+  const teals = ['#4794A8', '#2d7a8e', '#3aab9a', '#5b7fa6'];
+  return (
+    <div className={`tweaks-panel ${open ? 'open' : ''}`}>
+      <div className="tweaks-title">Tweaks <span style={{ fontSize: '0.7rem', color: '#aaa', fontWeight: 400 }}>Live customize</span></div>
+      <div className="tweak-row">
+        <span className="tweak-label">Primary Button Color</span>
+        <div className="tweak-colors">
+          {oranges.map(c => <div key={c} className={`color-swatch ${tweaks.accentOrange === c ? 'active' : ''}`} style={{ background: c }} onClick={() => setTweaks(t => ({ ...t, accentOrange: c }))}/>)}
+        </div>
+      </div>
+      <div className="tweak-row">
+        <span className="tweak-label">Accent Teal Color</span>
+        <div className="tweak-colors">
+          {teals.map(c => <div key={c} className={`color-swatch ${tweaks.accentTeal === c ? 'active' : ''}`} style={{ background: c }} onClick={() => setTweaks(t => ({ ...t, accentTeal: c }))}/>)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// LOCATIONS
+const locSocials = [
+  { label: 'Facebook', href: 'https://www.facebook.com/mmaandsportsrehab/', path: 'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z' },
+  { label: 'Instagram', href: 'https://www.instagram.com/msrphysicaltherapy/', path: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01M6.5 6.5a10 10 0 0 1 11 0 10 10 0 0 1 0 11 10 10 0 0 1-11 0 10 10 0 0 1 0-11z' },
+  { label: 'YouTube', href: 'https://www.youtube.com/channel/UCbTZnXBm0gr38TIHMsAy9zw', path: 'M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z' },
+  { label: 'X', href: 'https://x.com/mma1sportsrehab', path: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' },
+  { label: 'Yelp', href: 'https://www.yelp.com/biz/mma-and-sports-rehab-arlington-10', path: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.93V17h-2v-.07C7.06 16.44 4 13.38 4 10c0-4.07 3.06-7.44 7-7.93V2h2v.07C16.94 2.56 20 5.93 20 10c0 3.38-3.06 6.44-7 6.93z' },
+];
+
+const locations = [
+  {
+    name: 'Edgewood Clinic', tag: 'Open Now',
+    address: '1033 S Edgewood St\nArlington, VA 22204',
+    phone: '(703) 214-7445',
+    hours: 'Mon – Thurs: 7 am – 7 pm\nFriday: 7 am – 5 pm\nSaturday: 7 am – 5 pm',
+    mapsUrl: 'https://maps.google.com/?q=1033+S+Edgewood+St+Arlington+VA+22204',
+    pageUrl: 'https://rehabmma.com/physical-therapy-clinic/arlington-va/',
+  },
+  {
+    name: 'Walter Reed Clinic', tag: null,
+    address: '932 S Walter Reed Dr\nArlington, VA 22204',
+    phone: '(703) 214-7445',
+    hours: 'Mon – Fri: 7 am – 6 pm',
+    mapsUrl: 'https://maps.google.com/?q=932+S+Walter+Reed+Dr+Arlington+VA+22204',
+    pageUrl: 'https://rehabmma.com/physical-therapy-clinic/physical-therapy-arlington-va-s-walter-reed-dr/',
+  },
+];
+
+function LocationsSection() {
+  const [ref, visible] = useInView();
+  return (
+    <section className="locations-section" ref={ref}>
+      <div className="locations-inner">
+        {/* Brand col */}
+        <div className={`loc-brand fade-in ${visible ? 'visible' : ''}`}>
+          <img src="https://rehabmma.com/wp-content/uploads/2023/08/cropped-footer-logo.png" alt="MMA & Sports Rehab logo" className="loc-logo"/>
+          <p className="loc-brand-desc">Serving the Northern Virginia community with premium Physical Therapy since 2014.</p>
+          <div className="loc-socials">
+            {locSocials.map(({ label, href, path }) => (
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="loc-social-btn" aria-label={label}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d={path}/>
+                </svg>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Location cards */}
+        {locations.map((loc, i) => (
+          <div key={loc.name} className={`loc-card fade-in ${visible ? 'visible' : ''}`} style={{ transitionDelay: `${(i+1)*0.15}s` }}>
+            <div className="loc-card-name">
+              {loc.name}
+              {loc.tag && <span className="loc-tag">{loc.tag}</span>}
+            </div>
+            <hr className="loc-divider"/>
+            <div className="loc-info-row">
+              <div className="loc-info-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div className="loc-info-text">
+                <strong>Address</strong>
+                {loc.address.split('\n').map((l,j) => <span key={j}>{l}<br/></span>)}
+              </div>
+            </div>
+            <div className="loc-info-row">
+              <div className="loc-info-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.1 11.91 19.79 19.79 0 0 1 1.03 3.27 2 2 0 0 1 3 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div className="loc-info-text"><strong>Phone</strong>{loc.phone}</div>
+            </div>
+            <div className="loc-info-row">
+              <div className="loc-info-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4794A8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+              </div>
+              <div className="loc-info-text">
+                <strong>Hours</strong>
+                {loc.hours.split('\n').map((l,j) => <span key={j}>{l}<br/></span>)}
+              </div>
+            </div>
+            <a href={loc.mapsUrl} target="_blank" rel="noopener noreferrer" className="loc-dir-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="3,11 22,2 13,21 11,13 3,11"/></svg>
+              Get Directions
+            </a>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// FOOTER
+const footerCols = [
+  { heading: 'About', links: [['Our Practice','#'],['Our Locations','#'],['Join Our Team','#'],['Meet Our Team','#'],['Clinic News','#']] },
+  { heading: 'What We Treat', links: [['Back Pain Relief','#'],['Sciatica Pain Relief','#'],['Neck Pain Relief','#'],['Shoulder Pain Relief','#'],['All Conditions','#',true]] },
+  { heading: 'How We Treat', links: [['Blood Flow Restriction','#'],['Concussion Therapy','#'],['Cupping','#'],['Dry Needling','#'],['All Services','#',true]] },
+  { heading: 'Patient Info', links: [['New Patient Info/Forms','#'],['Direct Access','#'],['Insurance Info','#'],['Patient Testimonials','#'],['FAQs','#']] },
+  { heading: 'Health Tips', links: [['Blog','#'],['Newsletters','#'],['Workshops','#'],['Ebooks','#'],['Videos','#']] },
+];
+
+const socialIcons = [
+  { label: 'Facebook', href: 'https://www.facebook.com/mmaandsportsrehab/', path: 'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z' },
+  { label: 'Instagram', href: 'https://www.instagram.com/msrphysicaltherapy/', path: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01M6.5 6.5a10 10 0 0 1 11 0 10 10 0 0 1 0 11 10 10 0 0 1-11 0 10 10 0 0 1 0-11z' },
+  { label: 'YouTube', href: 'https://www.youtube.com/channel/UCbTZnXBm0gr38TIHMsAy9zw', path: 'M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z' },
+  { label: 'X (Twitter)', href: 'https://x.com/mma1sportsrehab', path: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' },
+  { label: 'Yelp', href: 'https://www.yelp.com/biz/mma-and-sports-rehab-arlington-10', path: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z' },
+];
+
+function Footer() {
+  const [openCols, setOpenCols] = useState({});
+  const toggle = (i) => setOpenCols(s => ({ ...s, [i]: !s[i] }));
+  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  return (
+    <footer className="footer">
+      <div className="footer-top">
+        {/* Brand col */}
+        <div className="footer-brand">
+          <div className="footer-logo">MMA &amp; <span>Sports Rehab</span></div>
+          <p className="footer-tagline">Personalized rehabilitation for athletes and active adults in Northern Virginia since 2014.</p>
+          <div className="footer-contact-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            (703) 528-0175
+          </div>
+          <div className="footer-contact-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            info@rehabmma.com
+          </div>
+        </div>
+        {/* Link cols */}
+        {footerCols.map((col, i) => (
+          <div className="footer-col" key={col.heading}>
+            <div className={`footer-col-heading ${openCols[i] ? 'open' : ''}`} onClick={() => toggle(i)}>
+              {col.heading}
+              <svg className="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+            </div>
+            <ul className={`footer-links ${openCols[i] ? 'open' : ''}`} aria-label={col.heading}>
+              {col.links.map(([label, href, highlight]) => (
+                <li key={label}><a href={href} className={highlight ? 'highlight' : ''}>{label}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <hr className="footer-divider"/>
+
+      <div className="footer-social-bar">
+        <div className="footer-socials">
+          {socialIcons.map(({ label, path }) => (
+            <button key={label} className="social-btn" aria-label={label}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d={path}/>
+              </svg>
+            </button>
+          ))}
+        </div>
+        <button className="back-to-top" onClick={scrollTop} aria-label="Back to top">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18,15 12,9 6,15"/></svg>
+          Back to Top
+        </button>
+      </div>
+
+      <div className="footer-copy-bar">
+        <p className="footer-copy">© 2026 MMA &amp; Sports Rehab. All rights reserved.</p>
+      </div>
+    </footer>
+  );
+}
+
+// APP
+function App() {
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [apptOpen, setApptOpen] = useState(false);
+  const [tweaksOpen, setTweaksOpen] = useState(false);
+
+  useEffect(() => {
+    // Register tweaks with host
+    window.addEventListener('message', e => {
+      if (e.data?.type === '__activate_edit_mode') setTweaksOpen(true);
+      if (e.data?.type === '__deactivate_edit_mode') setTweaksOpen(false);
+    });
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+  }, []);
+
+  useEffect(() => {
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: tweaks }, '*');
+  }, [tweaks]);
+
+  // Inject accent colors as CSS vars
+  useEffect(() => {
+    document.documentElement.style.setProperty('--orange', tweaks.accentOrange);
+    document.documentElement.style.setProperty('--teal', tweaks.accentTeal);
+  }, [tweaks]);
+
+  return (
+    <>
+      <Nav mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} onAppt={() => setApptOpen(true)}/>
+      <main>
+        <Hero onAppt={() => setApptOpen(true)} tweaks={tweaks}/>
+        <About onAppt={() => setApptOpen(true)}/>
+        <Treatments onAppt={() => setApptOpen(true)} tweaks={tweaks}/>
+        <Conditions tweaks={tweaks}/>
+        <Testimonials onAppt={() => setApptOpen(true)}/>
+      </main>
+      <LocationsSection/>
+      <Footer/>
+      <ApptModal open={apptOpen} onClose={() => setApptOpen(false)}/>
+      <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} open={tweaksOpen}/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
